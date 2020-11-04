@@ -1,0 +1,9 @@
+sbs_ci:
+  start: 'https://changeit/landing'
+  user: 'changeit'
+  password: 'changeit'
+
+sbs_monitoring:
+  start: 'https://changeit/landing'
+  user: 'changeit'
+  password: 'changeit'
