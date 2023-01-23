@@ -79,7 +79,7 @@ def test_user(start, user, userinfo):
                     assert(item in data.get(key)), f"{key}: {item} not found"
             else:
                 print(f"Testing {key}: {value}")
-                assert(value in data.get(key)), f"{key}: {item} not found"
+                assert(value in data.get(key)), f"{key}: {value} not found"
 
     except Exception as e:
         print(e)
