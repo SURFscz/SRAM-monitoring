@@ -23,7 +23,7 @@ config = config[KEY]
 
 # options = Options()
 options = ChromeOptions()
-options.headless = True
+options.add_argument('--headless')
 # browser = Chrome(options=options)
 browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
 send_command = ('POST', '/session/$sessionId/chromium/send_command')

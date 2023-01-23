@@ -23,5 +23,5 @@ RESULT=$?
 docker stop chrome >/dev/null 2>&1
 # echo "Down"
 
-echo $OUTPUT > sram_monitoring_${ENV}.log
+echo $OUTPUT > status/${ENV}.log
 exit $RESULT
