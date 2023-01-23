@@ -21,10 +21,8 @@ with open(sys.argv[1], 'r') as f:
 KEY = 'sram_monitoring'
 config = config[KEY]
 
-# options = Options()
 options = ChromeOptions()
 options.add_argument('--headless')
-# browser = Chrome(options=options)
 browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
 send_command = ('POST', '/session/$sessionId/chromium/send_command')
 browser.command_executor._commands['SEND_COMMAND'] = send_command

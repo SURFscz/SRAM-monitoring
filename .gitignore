@@ -4,4 +4,5 @@ lib/
 share/
 pyvenv.cfg
 config.yml
-sram_monitoring_*
+*.yml
+status/
