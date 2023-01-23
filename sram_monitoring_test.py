@@ -33,7 +33,7 @@ wait = WebDriverWait(browser, timeout=1)
 
 
 def test_user(start, user, userinfo):
-    print(f"user: {user}")
+    # print(f"user: {user}")
     # print(f"userinfo: {userinfo}")
 
     try:
@@ -75,11 +75,11 @@ def test_user(start, user, userinfo):
         for key, value in userinfo.items():
             if isinstance(value, list):
                 for item in value:
-                    print(f"Testing {key}: {item}")
-                    assert(item in data.get(key)), f"{key}: {item} not found"
+                    # print(f"Testing {key}: {item}")
+                    assert(item in data.get(key)), f"{user}, {key}: {item} not found"
             else:
-                print(f"Testing {key}: {value}")
-                assert(value in data.get(key)), f"{key}: {value} not found"
+                # print(f"Testing {key}: {value}")
+                assert(value in data.get(key)), f"{user}, {key}: {value} not found"
 
     except Exception as e:
         print(e)
@@ -91,7 +91,7 @@ def test_user(start, user, userinfo):
 
 user = {}
 for startpage, accounts in config.items():
-    print(f"start: {startpage}")
+    # print(f"start: {startpage}")
     for account, userinfo in accounts.items():
         (username, password) = account.split('.')
         user['name'] = username
