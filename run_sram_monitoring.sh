@@ -5,9 +5,9 @@ while ! curl --output /dev/null --silent --head http://localhost:4444/wd/hub; do
   sleep 1
 done
 # echo " Up!"
-OUTPUT=$(./sram_monitoring_test.py config.yml)
+OUTPUT=$(./bin/python sram_monitoring_test.py config.yml)
 RESULT=$?
 docker stop chrome >/dev/null 2>&1
 # echo "Down"
-echo $OUTPUT
+echo $OUTPUT > sram_monitoring.log
 exit $RESULT

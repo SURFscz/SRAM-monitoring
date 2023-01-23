@@ -1,7 +1,7 @@
 # created by virtualenv automatically
-chromedriver*
 bin/
 lib/
 share/
 pyvenv.cfg
 config.yml
+sram_monitoring.log

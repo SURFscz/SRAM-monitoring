@@ -76,10 +76,10 @@ def test_user(start, user, userinfo):
             if isinstance(value, list):
                 for item in value:
                     # print(f"Testing {key}: {item}")
-                    assert(item in data.get(key)), f"{user}, {key}: {item} not found"
+                    assert(item in data.get(key)), f"{user['name']}, {key}: {item} not found"
             else:
                 # print(f"Testing {key}: {value}")
-                assert(value in data.get(key)), f"{user}, {key}: {value} not found"
+                assert(value in data.get(key)), f"{user['name']}, {key}: {value} not found"
 
     except Exception as e:
         print(e)
