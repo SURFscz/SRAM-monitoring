@@ -1,27 +1,31 @@
 #!/usr/bin/env python
 
-from selenium.webdriver import Chrome
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver import Remote, ChromeOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import staleness_of, title_is, presence_of_element_located
 from selenium.webdriver.common.by import By
 
+import sys
 import yaml
 import json
 
-KEY = 'sram_monitoring'
+if len(sys.argv) < 2:
+    sys.exit(sys.argv[0] + "  <argument>")
 
-with open("config.yml", 'r') as f:
+with open(sys.argv[1], 'r') as f:
     try:
         config = yaml.load(f, Loader=yaml.FullLoader)
     except yaml.YAMLError as exc:
         print(exc)
 
+KEY = 'sram_monitoring'
 config = config[KEY]
 
-options = Options()
-options.headless = False
-browser = Chrome(options=options)
+# options = Options()
+options = ChromeOptions()
+options.headless = True
+# browser = Chrome(options=options)
+browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
 send_command = ('POST', '/session/$sessionId/chromium/send_command')
 browser.command_executor._commands['SEND_COMMAND'] = send_command
 browser.implicitly_wait(1)
@@ -81,7 +85,7 @@ def test_user(start, user, userinfo):
         print(e)
         # page = browser.page_source
         # print("page: {}".format(page))
-        browser.close()
+        # browser.close()
         exit(1)
 
 
@@ -95,5 +99,5 @@ for startpage, accounts in config.items():
         test_user(startpage, user, userinfo)
 
 # Close browser
-browser.close()
+# browser.close()
 print('OK')
