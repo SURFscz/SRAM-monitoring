@@ -31,8 +31,9 @@ wait = WebDriverWait(browser, timeout=1)
 
 
 def test_user(start, user, userinfo):
-    # print(f"user: {user}")
-    # print(f"userinfo: {userinfo}")
+    print("============", file=sys.stderr)
+    print(f"user: {user}", file=sys.stderr)
+    print(f"userinfo: {userinfo}", file=sys.stderr)
 
     try:
         # Clear cookies
@@ -80,11 +81,16 @@ def test_user(start, user, userinfo):
                 assert(value in data.get(key)), f"{user['name']}, {key}: {value} not found"
 
     except Exception as e:
-        print(e)
+        print(f"Exception occured: {str(e)}", file=sys.stderr)
+        print(f"Last page encountered: {browser.current_url}", file=sys.stderr)
+        print(f"FAILED on user={user['name']} page={start}", file=sys.stderr)
+        print(f"FAILED on user={user['name']} page={start}")
         # page = browser.page_source
         # print("page: {}".format(page))
         # browser.close()
         exit(1)
+
+    print("= OK =======", file=sys.stderr)
 
 
 user = {}
