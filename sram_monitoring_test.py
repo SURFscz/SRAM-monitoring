@@ -12,15 +12,17 @@ import json
 if len(sys.argv) < 2:
     sys.exit(sys.argv[0] + "  <argument>")
 
+print(f"= READING {sys.argv[1]} ====", file=sys.stderr)
 with open(sys.argv[1], 'r') as f:
     try:
         config = yaml.load(f, Loader=yaml.FullLoader)
     except yaml.YAMLError as exc:
         print(exc)
-
+        
 KEY = 'sram_monitoring'
 config = config[KEY]
 
+print(f"= Starting Chrome ===", file=sys.stderr)
 options = ChromeOptions()
 options.add_argument('--headless')
 browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
