@@ -17,7 +17,7 @@ while ! curl --output /dev/null --silent --head http://localhost:4444/wd/hub; do
 done
 # echo " Up!"
 
-OUTPUT=$(./bin/python sram_monitoring_test.py ${ENV}.yml)
+OUTPUT=$(python3 sram_monitoring_test.py ${ENV}.yml)
 RESULT=$?
 
 docker stop chrome >/dev/null 2>&1
