@@ -2,7 +2,8 @@
 
 from selenium.webdriver import Remote, ChromeOptions
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support.expected_conditions import staleness_of, title_is, presence_of_element_located
+from selenium.webdriver.support.expected_conditions import (staleness_of, presence_of_element_located,
+                                                            title_contains)
 from selenium.webdriver.common.by import By
 
 import sys
@@ -45,7 +46,7 @@ def test_user(start, user, userinfo):
         browser.get(start)
 
         # Wait for discovery to load
-        wait.until(title_is('SURF Research Access Management (Acceptance environment)'),
+        wait.until(title_contains('SURF Research Access Management'),
                    'Timeout waiting for discovery')
 
         # Choose Monitoring IdP
