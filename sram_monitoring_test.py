@@ -19,7 +19,7 @@ with open(sys.argv[1], 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     except yaml.YAMLError as exc:
         print(exc)
-        
+
 KEY = 'sram_monitoring'
 config = config[KEY]
 
@@ -84,7 +84,9 @@ def test_user(start, user, userinfo):
                 assert (value in data.get(key)), f"{user['name']}, {key}: {value} not found"
 
     except Exception as e:
-        print(f"Exception occured: {str(e)}", file=sys.stderr)
+        # print the type of exception and the message, but not the stacktrace
+        print(f"Exception: {type(e).__name__}: {e}", file=sys.stderr)
+
         print(f"Last page encountered: {browser.current_url}", file=sys.stderr)
         print(f"FAILED on user={user['name']} page={start}", file=sys.stderr)
         print(f"FAILED on user={user['name']} page={start}")
