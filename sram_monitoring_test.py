@@ -92,7 +92,7 @@ def test_user(start, user, userinfo):
         print(f"FAILED on user={user['name']} page={start}")
         # page = browser.page_source
         # print("page: {}".format(page))
-        # browser.close()
+        browser.quit()
 
         # exit without error, so that the next tests will still run
         exit(0)
@@ -110,5 +110,5 @@ for startpage, accounts in config.items():
         test_user(startpage, user, userinfo)
 
 # Close browser
-# browser.close()
+browser.quit()
 print('OK')
