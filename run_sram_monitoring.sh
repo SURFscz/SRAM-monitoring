@@ -30,10 +30,9 @@ echo $OUTPUT >> $LOGFILE
 OUTPUT=$(python3 sbs-login.py ${ENV}.yml)
 echo $OUTPUT >> $LOGFILE
 
+# SBS login test
+OUTPUT=$(python3 pam-monitor.py ${ENV}.yml)
+echo $OUTPUT >> $LOGFILE
+
 docker stop chrome >/dev/null 2>&1
 # echo "Down"
-
-
-
-
-

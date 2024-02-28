@@ -25,17 +25,18 @@ with open(sys.argv[1], 'r') as f:
 KEY = 'sbs_login'
 config = config[KEY]
 
+xpath_login_button = '//button[span[text()="Log in"]]'
+xpath_logo = '//a[@class="logo"]//span[text()="Research Access Management"]'
+
 print("= Starting Chrome ===", file=sys.stderr)
 options = ChromeOptions()
-# options.add_argument('--headless')
+options.add_argument('--headless')
 browser = Remote("http://127.0.0.1:4444", options=options)
 send_command = ('POST', '/session/$sessionId/chromium/send_command')
 browser.command_executor._commands['SEND_COMMAND'] = send_command
 browser.implicitly_wait(1)
 wait = WebDriverWait(browser, timeout=2)
 
-xpath_login_button = '//button[span[text()="Log in"]]'
-xpath_logo = '//a[@class="logo"]//span[text()="Research Access Management"]'
 
 try:
     for (url, login) in config.items():
@@ -66,7 +67,7 @@ try:
 
             # Wait for discovery to load
             wait.until(title_contains('SURF Research Access Management'),
-                        'Timeout waiting for discovery')
+                       'Timeout waiting for discovery')
 
             # Choose Monitoring IdP
             try:
@@ -89,7 +90,7 @@ try:
 
             # Wait for Profile to load
             wait.until(presence_of_element_located((By.XPATH, "//h2[text()='Your profile']")),
-                    'Timeout waiting for Profile')
+                       'Timeout waiting for Profile')
 
             # Test admin attributes
             attributes = browser.find_elements(By.XPATH, "//table[@class='my-attributes']/*/*/*")

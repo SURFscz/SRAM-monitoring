@@ -23,7 +23,7 @@ with open(sys.argv[1], 'r') as f:
 KEY = 'sram_monitoring'
 config = config[KEY]
 
-print(f"= Starting Chrome ===", file=sys.stderr)
+print("= Starting Chrome ===", file=sys.stderr)
 options = ChromeOptions()
 options.add_argument('--headless')
 browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)

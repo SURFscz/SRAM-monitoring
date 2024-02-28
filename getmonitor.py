@@ -17,6 +17,8 @@ def get(env, command):
                 return test.strip()
             elif command == 'login':
                 return login.strip()
+            elif command == 'pam':
+                return login.strip()
     except Exception:
         return "error\n"
 
