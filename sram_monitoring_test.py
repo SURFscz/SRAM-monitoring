@@ -23,7 +23,7 @@ with open(sys.argv[1], 'r') as f:
 KEY = 'sram_monitoring'
 config = config[KEY]
 
-print(f"= Starting Chrome ===", file=sys.stderr)
+print("= Starting Chrome ===", file=sys.stderr)
 options = ChromeOptions()
 options.add_argument('--headless')
 browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
@@ -92,7 +92,7 @@ def test_user(start, user, userinfo):
         print(f"FAILED on user={user['name']} page={start}")
         # page = browser.page_source
         # print("page: {}".format(page))
-        # browser.close()
+        browser.quit()
 
         # exit without error, so that the next tests will still run
         exit(0)
@@ -110,5 +110,5 @@ for startpage, accounts in config.items():
         test_user(startpage, user, userinfo)
 
 # Close browser
-# browser.close()
+browser.quit()
 print('OK')
