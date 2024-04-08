@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import json
 
 # getmonitor.py is used to retrieve the monitor values
 # using Zabbix system.run[]
@@ -8,19 +9,23 @@ import sys
 def get(env, command):
     try:
         with open(f'status/{env}.log', 'r') as f:
-            time = f.readline()
-            test = f.readline()
-            login = f.readline()
+            time = f.readline().strip()
+            test = f.readline().strip()
+            login = f.readline().strip()
+            pam = f.readline().strip()
             if command == 'time':
-                return time.strip()
+                return time
             elif command == 'test':
-                return test.strip()
+                return test
             elif command == 'login':
-                return login.strip()
+                return login
             elif command == 'pam':
-                return login.strip()
-    except Exception:
-        return "error\n"
+                return pam
+            elif command == 'json':
+                data = { "time": int(time), "test": test, "login": login, "pam": pam }
+                return json.dumps(data)
+    except Exception as e:
+        return f"error: {e}\n"
 
 
 if __name__ == '__main__':
