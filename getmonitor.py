@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import os
 import json
 
 # getmonitor.py is used to retrieve the monitor values
@@ -33,4 +34,8 @@ if __name__ == '__main__':
         sys.exit(sys.argv[0] + "  <env> <command>")
     env = sys.argv[1]
     command = sys.argv[2]
+
+    # find dir of script and chdir to it
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
     print(get(env, command))
