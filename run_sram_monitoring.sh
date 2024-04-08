@@ -20,19 +20,21 @@ done
 LOGFILE="status/${ENV}.log"
 
 #date
-date --utc +"%s" > $LOGFILE
+date --utc +"%s" > ${LOGFILE}.new
 
 # monitoring test
 OUTPUT=$(python3 sram_monitoring_test.py ${ENV}.yml)
-echo $OUTPUT >> $LOGFILE
+echo $OUTPUT >> ${LOGFILE}.new
 
 # SBS login test
 OUTPUT=$(python3 sbs-login.py ${ENV}.yml)
-echo $OUTPUT >> $LOGFILE
+echo $OUTPUT >> ${LOGFILE}.new
 
 # SBS login test
 OUTPUT=$(python3 pam-monitor.py ${ENV}.yml)
-echo $OUTPUT >> $LOGFILE
+echo $OUTPUT >> ${LOGFILE}.new
+
+mv ${LOGFILE}.new ${LOGFILE}
 
 docker stop chrome >/dev/null 2>&1
 # echo "Down"
