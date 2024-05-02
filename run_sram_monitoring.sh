@@ -22,17 +22,17 @@ LOGFILE="status/${ENV}.log"
 #date
 date --utc +"%s" > ${LOGFILE}.new
 
-# monitoring test
+# Service login test
 OUTPUT=$(python3 sram_monitoring_test.py ${ENV}.yml)
-echo $OUTPUT >> ${LOGFILE}.new
+echo login=$OUTPUT >> ${LOGFILE}.new
 
 # SBS login test
 OUTPUT=$(python3 sbs-login.py ${ENV}.yml)
-echo $OUTPUT >> ${LOGFILE}.new
+echo sbs_login=$OUTPUT >> ${LOGFILE}.new
 
-# SBS login test
+# PAM weblogin test
 OUTPUT=$(python3 pam-monitor.py ${ENV}.yml)
-echo $OUTPUT >> ${LOGFILE}.new
+echo pam_weblogin=$OUTPUT >> ${LOGFILE}.new
 
 mv ${LOGFILE}.new ${LOGFILE}
 
