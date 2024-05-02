@@ -9,8 +9,7 @@ import json
 
 
 def parse_line(name: str, line: str) -> str:
-    line.strip()
-    result_name, result = line.split('=', 1)
+    result_name, result = line.strip().split('=', 1)
     if result_name != name:
         raise Exception(f"Expected '{name}', got '{result_name}'")
     return result
