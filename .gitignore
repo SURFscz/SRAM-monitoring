@@ -1,8 +1,8 @@
-# created by virtualenv automatically
+.idea/
 bin/
 lib/
 share/
 pyvenv.cfg
 config.yml
-*.yml
+./*.yml
 status/
