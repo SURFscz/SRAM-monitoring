@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from selenium.webdriver import Remote, ChromeOptions
+from selenium.webdriver import Remote, ChromeOptions, FirefoxOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import (staleness_of, presence_of_element_located,
                                                             title_contains)
@@ -11,11 +11,12 @@ import yaml
 import json
 import time
 import traceback
+import requests
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
     sys.exit(sys.argv[0] + "  <argument>")
 
-print(f"= READING {sys.argv[1]} ====", file=sys.stderr)
+print(f"= READING {sys.argv[1:]} ====", file=sys.stderr)
 with open(sys.argv[1], 'r') as f:
     try:
         config = yaml.load(f, Loader=yaml.FullLoader)
@@ -28,20 +29,26 @@ config = config[KEY]
 xpath_login_button = '//button[span[text()="Log in"]]'
 xpath_logo = '//a[@class="logo"]//span[text()="Research Access Management"]'
 
-print("= Starting Chrome ===", file=sys.stderr)
-options = ChromeOptions()
-options.add_argument('--headless')
-browser = Remote("http://127.0.0.1:4444", options=options)
-send_command = ('POST', '/session/$sessionId/chromium/send_command')
-browser.command_executor._commands['SEND_COMMAND'] = send_command
-browser.implicitly_wait(1)
-wait = WebDriverWait(browser, timeout=2)
+browser = sys.argv[2]
+print(f"= Starting Browser {browser} ===", file=sys.stderr)
+if browser == "chrome":
+    options = ChromeOptions()
+elif browser == "firefox":
+    options = FirefoxOptions()
+else:
+    print('Bad Browser')
+    exit
 
+options.add_argument('--headless')
 
 try:
     for (url, login) in config.items():
         print(url, file=sys.stderr)
         for (account, name) in login.items():
+            browser = Remote("http://127.0.0.1:4444", options=options)
+            browser.implicitly_wait(2)
+            wait = WebDriverWait(browser, timeout=2)
+
             (username, password) = account.split('.')
             print("============", file=sys.stderr)
             print(username, name, file=sys.stderr)
@@ -54,13 +61,10 @@ try:
             # Wait for SBS health up
             status = ""
             while status != "UP":
-                browser.get(health)
-                state = json.loads(browser.find_element(By.XPATH, "//pre").text)
+                body = requests.get(health)
+                state = body.json()
                 status = state.get("status")
                 time.sleep(1)
-
-            # Clear cookies
-            browser.execute('SEND_COMMAND', dict(cmd='Network.clearBrowserCookies', params={}))
 
             # Get SBS profile page
             browser.get(start)
@@ -98,8 +102,9 @@ try:
             #     print(f"a.text: {a.text}")
             assert (name in [a.text for a in attributes]), "No valid admin profile found"
             print("= OK =======", file=sys.stderr)
+            browser.quit()
+
         print("OK")
-    browser.quit()
     print("============", file=sys.stderr)
     exit(0)
 
