@@ -4,26 +4,25 @@ if [ -z $1 ]; then
   exit 1
 fi
 
+if [ "$2" != "chrome" ] && [ "$2" != "firefox" ]; then
+    echo "Browser not set (chrome or firefox)"
+    exit
+fi
+
 ENV=$1
 if [ ! -f ${ENV}.yml ]; then
   echo "Environment config not available"
   exit 1
 fi
 
-if [ ! -f browser ]; then
-  echo "chrome" > browser
-fi
-
-BROWSER=$(cat browser)
+BROWSER=$2
 
 echo "Starting $BROWSER container"
 if [ "$BROWSER" = "chrome" ]; then
   docker run --shm-size=2g --rm -d --name browser -p 4444:4444 -p 7900:7900 selenium/standalone-chrome >/dev/null 2>&1
-  echo "firefox" > browser
 fi
 if [ "$BROWSER" = "firefox" ]; then
   docker run --shm-size=2g --rm -d --name browser -p 4444:4444 -p 7900:7900 selenium/standalone-firefox >/dev/null 2>&1
-  echo "chrome" > browser
 fi
 
 i=0
@@ -59,4 +58,4 @@ echo pam_weblogin=$OUTPUT >> ${LOGFILE}.new
 mv ${LOGFILE}.new ${LOGFILE}
 
 docker stop browser >/dev/null 2>&1
-# echo "Down"
+echo "End of  $BROWSER test"
