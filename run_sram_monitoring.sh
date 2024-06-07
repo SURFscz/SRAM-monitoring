@@ -5,8 +5,11 @@ if [ -z $1 ]; then
 fi
 
 if [ "$2" != "chrome" ] && [ "$2" != "firefox" ]; then
-    echo "Browser not set (chrome or firefox)"
-    exit
+    echo "Warning: browser not set (chrome or firefox)"
+    echo "Defaulting to chrome"
+    BROWSER="chrome"
+else
+    BROWSER=$2
 fi
 
 ENV=$1
@@ -14,8 +17,6 @@ if [ ! -f ${ENV}.yml ]; then
   echo "Environment config not available"
   exit 1
 fi
-
-BROWSER=$2
 
 echo "Starting $BROWSER container"
 if [ "$BROWSER" = "chrome" ]; then
