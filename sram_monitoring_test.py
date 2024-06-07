@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from selenium.webdriver import Remote, ChromeOptions
+from selenium.webdriver import Remote, ChromeOptions, FirefoxOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import (staleness_of, presence_of_element_located,
                                                             title_contains)
@@ -10,38 +10,43 @@ import sys
 import yaml
 import json
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
     sys.exit(sys.argv[0] + "  <argument>")
 
-print(f"= READING {sys.argv[1]} ====", file=sys.stderr)
+print(f"= READING {sys.argv[1:]} ====", file=sys.stderr)
 with open(sys.argv[1], 'r') as f:
     try:
         config = yaml.load(f, Loader=yaml.FullLoader)
     except yaml.YAMLError as exc:
         print(exc)
 
+
 KEY = 'sram_monitoring'
 config = config[KEY]
 
-print("= Starting Chrome ===", file=sys.stderr)
-options = ChromeOptions()
+browser = sys.argv[2]
+print(f"= Starting Browser {browser} ===", file=sys.stderr)
+if browser == "chrome":
+    options = ChromeOptions()
+elif browser == "firefox":
+    options = FirefoxOptions()
+else:
+    print('Bad Browser')
+    exit
+
 options.add_argument('--headless')
-browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
-send_command = ('POST', '/session/$sessionId/chromium/send_command')
-browser.command_executor._commands['SEND_COMMAND'] = send_command
-browser.implicitly_wait(1)
-wait = WebDriverWait(browser, timeout=1)
 
 
 def test_user(start, user, userinfo):
+    browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
+    browser.implicitly_wait(2)
+    wait = WebDriverWait(browser, timeout=2)
+
     print("============", file=sys.stderr)
     print(f"user: {user}", file=sys.stderr)
     print(f"userinfo: {userinfo}", file=sys.stderr)
 
     try:
-        # Clear cookies
-        browser.execute('SEND_COMMAND', dict(cmd='Network.clearBrowserCookies', params={}))
-
         # Start browser on RP
         browser.get(start)
 
@@ -98,6 +103,7 @@ def test_user(start, user, userinfo):
         exit(0)
 
     print("= OK =======", file=sys.stderr)
+    browser.quit()
 
 
 user = {}
@@ -109,6 +115,4 @@ for startpage, accounts in config.items():
         user['password'] = password
         test_user(startpage, user, userinfo)
 
-# Close browser
-browser.quit()
 print('OK')

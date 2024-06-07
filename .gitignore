@@ -4,5 +4,8 @@ lib/
 share/
 pyvenv.cfg
 config.yml
+prd.yml
+acc.yml
+browser
 ./*.yml
 status/
