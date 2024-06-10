@@ -85,7 +85,7 @@ try:
 
             monitor.click()
 
-            wait.until(staleness_of(monitor))
+            wait.until(url_contains('test-idp.sram.surf.nl'))
 
             # Login as user
             browser.find_element(By.ID, 'username').send_keys(username)

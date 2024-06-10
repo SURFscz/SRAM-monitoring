@@ -66,7 +66,7 @@ def test_user(start, user, userinfo):
 
         monitor.click()
 
-        wait.until(staleness_of(monitor))
+        wait.until(url_contains('test-idp.sram.surf.nl'))
 
         # Login as user
         browser.find_element(By.ID, 'username').send_keys(user['name'])
