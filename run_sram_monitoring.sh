@@ -58,6 +58,7 @@ echo pam_weblogin=$OUTPUT >> ${LOGFILE}.new
 
 echo "browser=$BROWSER" >> ${LOGFILE}.new
 
+cat ${LOGFILE}.new
 mv ${LOGFILE}.new ${LOGFILE}
 
 docker stop browser >/dev/null 2>&1
