@@ -11,7 +11,7 @@ insert_final_newline = true
 max_line_length = 120
 
 [*.py]
-indent_styke = space
+indent_style = space
 
 [*.{yml,yaml,yml.j2,yaml.j2}]
 max_line_length = 100
