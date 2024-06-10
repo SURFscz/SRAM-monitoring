@@ -3,7 +3,7 @@
 from selenium.webdriver import Remote, ChromeOptions, FirefoxOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import (staleness_of, presence_of_element_located,
-                                                            title_contains)
+                                                            title_contains, url_contains)
 from selenium.webdriver.common.by import By
 
 import sys
