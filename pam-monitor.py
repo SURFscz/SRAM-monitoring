@@ -53,8 +53,8 @@ options.add_argument('--headless')
 try:
     for url, values in config.items():
         browser = Remote("http://127.0.0.1:4444", options=options)
-        browser.implicitly_wait(2)
-        wait = WebDriverWait(browser, timeout=2)
+        browser.implicitly_wait(10)
+        wait = WebDriverWait(browser, timeout=10)
 
         token = values['token']
         account = values['account']
@@ -94,7 +94,7 @@ try:
         browser.find_element(By.XPATH, xpath_login_button).click()
 
         # Wait for discovery to load
-        wait.until(title_contains('SURF Research Access Management'),
+        wait.until(presence_of_element_located((By.XPATH, "//p[@class='subtitleRA21']")),
                    'Timeout waiting for discovery')
 
         # Choose Monitoring IdP
@@ -147,5 +147,6 @@ try:
 except Exception as e:
     tr = traceback.extract_tb(e.__traceback__)[0]
     print(f"error {type(e).__name__} on line {tr.lineno} of '{tr.filename}'")
+    browser.save_screenshot("screenshot.png")
     browser.quit()
     exit(1)
