@@ -70,7 +70,7 @@ try:
             browser.get(start)
 
             # Wait for discovery to load
-            wait.until(title_contains('SURF Research Access Management'),
+            wait.until(presence_of_element_located((By.XPATH, "//p[@class='subtitleRA21']")),
                        'Timeout waiting for discovery')
 
             # Choose Monitoring IdP
