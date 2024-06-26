@@ -46,8 +46,8 @@ try:
         print(url, file=sys.stderr)
         for (account, name) in login.items():
             browser = Remote("http://127.0.0.1:4444", options=options)
-            browser.implicitly_wait(2)
-            wait = WebDriverWait(browser, timeout=2)
+            browser.implicitly_wait(10)
+            wait = WebDriverWait(browser, timeout=10)
 
             (username, password) = account.split('.')
             print("============", file=sys.stderr)
@@ -114,6 +114,7 @@ except Exception as e:
 
     tr = traceback.extract_tb(e.__traceback__)[0]
     print(f"error {type(e).__name__} on line {tr.lineno} of '{tr.filename}'")
+    browser.save_screenshot("screenshot.png")
     browser.quit()
 
     print("", end="", flush=True)

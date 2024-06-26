@@ -39,8 +39,8 @@ options.add_argument('--headless')
 
 def test_user(start, user, userinfo):
     browser = Remote("http://127.0.0.1:4444/wd/hub", options=options)
-    browser.implicitly_wait(2)
-    wait = WebDriverWait(browser, timeout=2)
+    browser.implicitly_wait(10)
+    wait = WebDriverWait(browser, timeout=10)
 
     print("============", file=sys.stderr)
     print(f"user: {user}", file=sys.stderr)
@@ -97,6 +97,7 @@ def test_user(start, user, userinfo):
         print(f"FAILED on user={user['name']} page={start}")
         # page = browser.page_source
         # print("page: {}".format(page))
+        browser.save_screenshot("screenshot.png")
         browser.quit()
 
         # exit without error, so that the next tests will still run
