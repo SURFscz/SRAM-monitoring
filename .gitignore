@@ -6,6 +6,7 @@ pyvenv.cfg
 config.yml
 prd.yml
 acc.yml
-browser
 ./*.yml
 status/
+venv/
+screenshot.png

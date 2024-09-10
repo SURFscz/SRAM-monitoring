@@ -1,4 +1,13 @@
-#!/bin/sh
+#!/bin/bash
+
+function ok {
+	if [ "$1" == "0" ]; then
+		echo "OK"
+	else
+		echo "ERROR"
+	fi
+}
+
 if [ -z $1 ]; then
 	echo "Environment not set"
 	exit 1
@@ -42,18 +51,14 @@ LOGFILE="status/${ENV}.log"
 #date
 date --utc +"%s" > ${LOGFILE}.new
 
-# Service login test
-OUTPUT=$(python3 sram_monitoring_test.py "${ENV}.yml" "$BROWSER")
-echo login=$OUTPUT >> ${LOGFILE}.new
 
-# SBS login test
-OUTPUT=$(python3 sbs-login.py "${ENV}.yml" "$BROWSER")
-echo sbs_login=$OUTPUT >> ${LOGFILE}.new
-
-# PAM weblogin test
-OUTPUT=$(python3 pam-monitor.py "${ENV}.yml" "$BROWSER")
-echo pam_weblogin=$OUTPUT >> ${LOGFILE}.new
-
+# Run behave tests
+behave features/01_monitoring.feature -D ENV="${ENV}.yml" -D BROWSER="$BROWSER"
+echo login=$(ok $?) >> ${LOGFILE}.new
+behave features/02_sbs.feature -D ENV="${ENV}.yml" -D BROWSER="$BROWSER"
+echo sbs_login=$(ok $?) >> ${LOGFILE}.new
+behave features/03_pam-weblogin.feature -D ENV="${ENV}.yml" -D BROWSER="$BROWSER"
+echo pam_weblogin=$(ok $?) >> ${LOGFILE}.new
 echo "browser=$BROWSER" >> ${LOGFILE}.new
 
 cat ${LOGFILE}.new

@@ -1,3 +1,5 @@
 PyYAML
 selenium
+behave
 requests
+setuptools
