@@ -163,8 +163,8 @@ def step_impl(context, user):
     print(name)
     found = False
     for row in chunk(attributes, 3):
-        attr_name = row[0]
-        attr_val = row[1]
+        attr_name = row[0].text
+        attr_val = row[1].text
         print(f"{attr_name}: '{attr_val}'")
         if attr_name == 'Name' and attr_val == name:
             found = True
