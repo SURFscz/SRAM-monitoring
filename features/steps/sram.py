@@ -150,12 +150,26 @@ def step_impl(context, user):
     context.wait.until(presence_of_element_located((By.XPATH, "//h2[text()='Your profile']")),
                        'Timeout waiting for Profile')
 
+
+    # from https://stackoverflow.com/questions/312443/how-do-i-split-a-list-into-equally-sized-chunks
+    # splits [1,2,3,4,5,6] into [[1,2,3],[4,5,6]]
+    from itertools import islice
+    def chunk(it, size):
+        it = iter(it)
+        return iter(lambda: tuple(islice(it, size)), ())
+
     # Test user attributes
     attributes = context.browser.find_elements(By.XPATH, "//table[@class='my-attributes']/*/*/*")
     print(name)
-    for a in attributes:
-        print(a.text)
-    assert (name in [a.text for a in attributes]), "No valid user profile found"
+    found = False
+    for row in chunk(attributes, 3):
+        attr_name = row[0]
+        attr_val = row[1]
+        print(f"{attr_name}: '{attr_val}'")
+        if attr_name == 'Name' and attr_val == name:
+            found = True
+
+    assert (found), "No valid user profile found, 'Name' not found or does not match"
 
 
 @then('test userdata for {user} in {endpoint}')
