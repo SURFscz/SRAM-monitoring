@@ -24,6 +24,7 @@ def get(env, command):
             login = parse_line('sbs_login', f.readline())
             pam = parse_line('pam_weblogin', f.readline())
             browser = parse_line('browser', f.readline())
+            tries = parse_line('tries', f.readline())
 
             if command == 'time':
                 return time
@@ -36,7 +37,16 @@ def get(env, command):
             elif command == 'browser':
                 return browser
             elif command == 'json':
-                data = {"time": int(time), "test": test, "login": login, "pam": pam, "browser": browser}
+                fail_count = (test != "OK") + (login != "OK") + (pam != "OK")
+                data = {
+                    "time": int(time),
+                    "test": test,
+                    "login": login,
+                    "pam": pam,
+                    "tries": tries,
+                    "failure_count": fail_count,
+                    "browser": browser
+                }
                 return json.dumps(data)
     except Exception as e:
         return f"error: {e}\n"
