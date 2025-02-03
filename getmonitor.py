@@ -24,7 +24,7 @@ def get(env, command):
             login = parse_line('sbs_login', f.readline())
             pam = parse_line('pam_weblogin', f.readline())
             browser = parse_line('browser', f.readline())
-            tries = parse_line('tries', f.readline())
+            tries = int(parse_line('tries', f.readline()))
 
             if command == 'time':
                 return time
@@ -44,6 +44,7 @@ def get(env, command):
                     "login": login,
                     "pam": pam,
                     "tries": tries,
+                    "retries": tries - 1,
                     "failure_count": fail_count,
                     "browser": browser
                 }
