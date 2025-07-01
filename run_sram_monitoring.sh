@@ -68,14 +68,17 @@ do
 	echo "tries=$retry" >> "${LOGFILE}.new"
 
 	cat "${LOGFILE}.new"
-	mv "${LOGFILE}.new" "${LOGFILE}"
 
-	# only retry of one of the tests failed
-	ok_count=$( grep -c '=OK' "${LOGFILE}" )
+	# only retry if one of the tests failed
+	ok_count=$( grep -c '=OK' "${LOGFILE}.new" )
 	if [ "$ok_count" = "3" ]; then
 		break
 	fi
 done
+
+# only write the file when everything is ok, or we have run out of retries
+mv "${LOGFILE}.new" "${LOGFILE}"
+
 
 docker stop browser >/dev/null 2>&1
 docker container rm browser >/dev/null 2>&1
