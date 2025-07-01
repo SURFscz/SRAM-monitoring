@@ -55,7 +55,10 @@ NOW=$(date --utc +"%s")
 # shellcheck disable=SC2129
 for retry in 1 2 3
 do
-	echo "check failed, retrying (attempt $retry)..."
+	if [[ $retry != 1 ]]
+	then
+		echo "check failed, retrying (attempt $retry)..."
+	fi
 	echo "$NOW" > "${LOGFILE}.new"
 
 	behave features/01_monitoring.feature -D ENV="${ENV}.yml" -D BROWSER="$BROWSER"
