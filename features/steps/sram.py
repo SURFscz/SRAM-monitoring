@@ -2,6 +2,7 @@ from behave import given, when, then
 from selenium.webdriver.support.expected_conditions import (
     presence_of_element_located, url_contains, element_to_be_clickable)
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 import requests
 import time
 import json
@@ -122,6 +123,9 @@ def step_impl(context):
         "Authorization": f"Bearer {token}",
     }
 
+    # Wait for final page title
+    context.wait.until(EC.title_is("Research Access Management"))
+
     # Wait for Verification code to load
     context.wait.until(presence_of_element_located((By.XPATH, xpath_code_element)),
                        'Timeout waiting for Profile')
@@ -146,10 +150,12 @@ def step_impl(context, user):
     # Environment
     name = context.env['accounts'][user]['name']
 
+    # Wait for final page title
+    context.wait.until(EC.title_is("SRAM - Profile"))
+
     # Wait for Profile to load
     context.wait.until(presence_of_element_located((By.XPATH, "//h2[text()='Your profile']")),
                        'Timeout waiting for Profile')
-
 
     # from https://stackoverflow.com/questions/312443/how-do-i-split-a-list-into-equally-sized-chunks
     # splits [1,2,3,4,5,6] into [[1,2,3],[4,5,6]]
@@ -176,6 +182,9 @@ def step_impl(context, user):
 def step_impl(context, user, endpoint):
     # Environment
     userdata = context.env['user_data'][user][endpoint]
+
+    # Wait for final page title
+    context.wait.until(lambda x: context.browser.title in ['Test RP', 'SRAM Demo SP'])
 
     data_element = context.browser.find_elements(By.ID, "data")[0].text
     data = json.loads(data_element)
